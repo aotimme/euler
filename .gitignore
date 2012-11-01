@@ -4,3 +4,5 @@ cabal-dev
 *.hi
 *.chi
 *.chs.h
+prob1/prob1
+prob2/prob2
