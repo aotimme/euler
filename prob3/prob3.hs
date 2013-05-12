@@ -1,11 +1,5 @@
 -- What is the largest prime factor of the number 600851475143 ?
--- TODO: do function to get prime factors... should be faster
---       function would do both the sieve of Eratosthenes to get the
---       next prime number *and* add prime factors to a list, while
---       "chipping away" at the original number
---       when the "chipped away" number is a prime number, we are done!
---       and, in fact, the final "chipped away" number will be the
---       largest prime factor :)
+-- ANS: 6857
 
 -- ordered list difference
 minus (x:xs) (y:ys) = case (compare x y) of 
@@ -19,9 +13,14 @@ primesTo m = 2 : eratos [3,5..m]  where
   eratos []     = []
   eratos (p:xs) = p : eratos (xs `minus` [p, p+2*p..m])
 
+--getLargestFactor :: (Integral n) => n -> [n] -> n
+getLargestFactor num (x:xs)
+  | num == 1         = x
+  | num `mod` x == 0 = getLargestFactor (num `div` x) (x:xs)
+  | num `mod` x /= 0 = getLargestFactor num xs
+
 largestPrimeFactor :: (Integral n) => n -> n
-largestPrimeFactor number = factor where
-  factor = head [ y | y <- (reverse $ primesTo number), number `mod` y == 0 ]
+largestPrimeFactor number = getLargestFactor number (primesTo number)
 
 main = putStrLn ("factor = " ++ (show $ largestPrimeFactor number)) where
   number = 600851475143
